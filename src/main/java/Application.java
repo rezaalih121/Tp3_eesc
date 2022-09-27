@@ -6,15 +6,13 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class Application extends Canvas {
-
-
     public static Ecole ecole = new Ecole("EESC", "LAXOU");
     public static Etudiant etudiant;
     public static Evaluation evaluation;
 
     public Application(XmlDbFileHandler xmlDbFileHandler) throws InterruptedException {
 
-        JFrame fenetre = new JFrame("Casse brique");
+        WindowsHandler fenetre = new WindowsHandler("Application d'ecole",ecole);
         //On récupère le panneau de la fenetre principale
         JPanel panneau = (JPanel) fenetre.getContentPane();
         JPanel panneau2 = new JPanel();
@@ -29,31 +27,10 @@ public class Application extends Canvas {
         JLabel label = new JLabel("Application de l`ecole " + ecole.getNomEcole() + " a " + ecole.getAdresse());
         JLabel labelMoyenne = new JLabel("Moyenne de globale notes :  " + 0);
 
+        TableHandler jTable = new TableHandler(ecole);
 
-        String column[] = {"NOM", "AGE", "EVALUATIONS\n Metiere : Note"};
-        String data[][] = new String[ecole.getListeEtudiant().size()][3];
-        int i = 0;
-        for (Etudiant etudiant : ecole.getListeEtudiant()) {
-            data[i][0] = etudiant.getNom();
-            data[i][1] = etudiant.getAge() + "";
-            String evals = "";
-            for (Evaluation evaluation : etudiant.getListeEvaluations()) {
-                evals += " " + evaluation.getMatiere() + " : " + evaluation.getNote() + " | ";
-            }
-            data[i][2] = evals;
-            i++;
-        }
-        DefaultTableModel model = new DefaultTableModel(data, column);
-        JTable jt = new JTable(model);
+        JScrollPane sp = new JScrollPane(jTable);
 
-        jt.setShowGrid(true);
-        jt.setShowVerticalLines(true);
-        jt.getScrollableTracksViewportHeight();
-        jt.getAutoscrolls();
-        jt.setBounds(0, 0, 300, 200);
-        jt.getColumn(column[0]).setMaxWidth(40);
-        jt.getColumn(column[1]).setMaxWidth(30);
-        JScrollPane sp = new JScrollPane(jt);
         JButton ajouteEtudiantButton = new JButton();
         JButton moyenneButton2 = new JButton();
 
@@ -155,22 +132,8 @@ public class Application extends Canvas {
                         etudiant.ajouteEvaluations(evaluation);
                         ecole.ajouteEtudiants(etudiant);
 
-                        String column[] = {"NOM", "AGE", "EVALUATIONS\n Metiere : Note"};
-                        String data[][] = new String[ecole.getListeEtudiant().size()][3];
-                        int i = 0;
-                        for (Etudiant etudiant2 : ecole.getListeEtudiant()) {
-                            data[i][0] = etudiant2.getNom();
-                            data[i][1] = etudiant2.getAge() + "";
-                            String evals = "";
-                            for (Evaluation evaluation2 : etudiant2.getListeEvaluations()) {
-                                evals += " " + evaluation2.getMatiere() + " : " + evaluation2.getNote() + " | ";
-                            }
-                            data[i][2] = evals;
-                            i++;
-                        }
-                        DefaultTableModel model = new DefaultTableModel(data, column);
-                        jt.setModel(model);
-                        jt.repaint();
+                        jTable.setTable();
+
 
                     }
                 }
