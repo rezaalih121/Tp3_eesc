@@ -9,10 +9,12 @@ public class WindowsHandler extends JFrame implements WindowListener, WindowStat
 
     public WindowsHandler(String title, Ecole ecole) throws HeadlessException {
         super(title);
+        ecole = ecole;
     }
 
+    private Ecole ecole;
 
-    private addComponentsToPane() {
+    private void addComponentsToPane() {
         JPanel panel = new JPanel();
         panel = (JPanel) this.getContentPane();
         JScrollPane scrollPane = new JScrollPane(new TableHandler(ecole));
