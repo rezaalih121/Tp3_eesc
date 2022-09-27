@@ -3,7 +3,9 @@ public class Evaluation {
     protected String matiere;
 
 
-    protected enum listeMatieres {JAVA,PHP,PYTON,C,HTML};
+    protected static enum listeMatieres {JAVA, PHP, PYTON, C, HTML}
+
+    ;
 
 
     public Evaluation(float note, String matiere) {
