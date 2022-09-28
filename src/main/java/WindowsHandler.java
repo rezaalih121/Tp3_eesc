@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
@@ -16,8 +17,25 @@ public class WindowsHandler extends JFrame implements WindowListener, WindowStat
 
     private void addComponentsToPane() {
         JPanel panel = new JPanel();
+        JPanel panel2 = new JPanel();
         panel = (JPanel) this.getContentPane();
+        setBounds(0, 0, 500, 500);
+
+        panel.setPreferredSize(new Dimension(500, 500));
+        panel2.setPreferredSize(new Dimension(400, 300));
+
+        panel.setLayout(new FlowLayout());
+        panel2.setLayout(new FlowLayout());
+
         JScrollPane scrollPane = new JScrollPane(new TableHandler(ecole));
+
+        JLabel headerLabel = new JLabel("Application de l`ecole " + ecole.getNomEcole() + " a " + ecole.getAdresse());
+        headerLabel.setBorder(BorderFactory.createLineBorder(Color.black));
+        headerLabel.setFont(new Font("Broadway", Font.BOLD, 21));
+
+        JLabel moyenneLabel = new JLabel("Moyenne de globale notes :  " + 0);
+        ButtonHandler moyenneBtn = new ButtonHandler("Calculez Moyenne Note");
+        moyenneLabel.setLabelFor(moyenneBtn);
 
 
     }

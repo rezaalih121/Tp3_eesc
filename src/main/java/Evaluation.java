@@ -3,11 +3,6 @@ public class Evaluation {
     protected String matiere;
 
 
-    protected static enum listeMatieres {JAVA, PHP, PYTON, C, HTML}
-
-    ;
-
-
     public Evaluation(float note, String matiere) {
         this.note = note;
         this.matiere = matiere;

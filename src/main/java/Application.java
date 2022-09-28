@@ -12,7 +12,7 @@ public class Application extends Canvas {
 
     public Application(XmlDbFileHandler xmlDbFileHandler) throws InterruptedException {
 
-        WindowsHandler fenetre = new WindowsHandler("Application d'ecole",ecole);
+        WindowsHandler fenetre = new WindowsHandler("Application d'ecole", ecole);
         //On récupère le panneau de la fenetre principale
         JPanel panneau = (JPanel) fenetre.getContentPane();
         JPanel panneau2 = new JPanel();
@@ -25,6 +25,7 @@ public class Application extends Canvas {
         panneau.add(panneau2);
         panneau2.setLayout(new GridLayout());
         JLabel label = new JLabel("Application de l`ecole " + ecole.getNomEcole() + " a " + ecole.getAdresse());
+        label.setFont(new Font("Broadway", Font.BOLD, 21));
         JLabel labelMoyenne = new JLabel("Moyenne de globale notes :  " + 0);
 
         TableHandler jTable = new TableHandler(ecole);
@@ -66,6 +67,7 @@ public class Application extends Canvas {
 
 
         JLabel Matiere = new JLabel("Matiere : ");
+
 
         String[] MatiereTextList = new String[]{"JAVA", "PHP", "SQL", "PYTON"};
         JList ListMatiere = new JList(MatiereTextList);
