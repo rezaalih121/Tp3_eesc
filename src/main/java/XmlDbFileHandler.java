@@ -42,19 +42,19 @@ public class XmlDbFileHandler {
             dBuilder = dbFactory.newDocumentBuilder();
             doc = dBuilder.parse(inputFile);
             doc.getDocumentElement().normalize();
-            System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
+            //System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
 
             nomEcole = doc.getElementsByTagName("nomEcole").item(0).getTextContent();
             adresseEcole = doc.getElementsByTagName("adresse").item(0).getTextContent();
             ecole = new Ecole(nomEcole, adresseEcole);
 
-            System.out.println(nomEcole + "   " + adresseEcole);
+            //System.out.println(nomEcole + "   " + adresseEcole);
             NodeList nList = doc.getElementsByTagName("etudiant");
-            System.out.println("----------------------------");
+            //System.out.println("----------------------------");
             for (int temp = 0; temp < nList.getLength(); temp++) {
 
                 Node nNode = nList.item(temp);
-                System.out.println("\n Current element : " + nNode.getNodeName());
+                //System.out.println("\n Current element : " + nNode.getNodeName());
 
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element eElement = (Element) nNode;
@@ -70,8 +70,8 @@ public class XmlDbFileHandler {
                     etudiant = new Etudiant(nomEtudiant, ageEtudiant);
 
                     NodeList evaluationNodeList = eElement.getElementsByTagName("evaluation");
-                    System.out.println("Nome Etudiant : " + etudiant.getNom() + " age : " + etudiant.getAge());
-                    System.out.println(evaluationNodeList.getLength());
+                    //System.out.println("Nome Etudiant : " + etudiant.getNom() + " age : " + etudiant.getAge());
+                    //System.out.println(evaluationNodeList.getLength());
 
 
                     for (int it = 0; it < evaluationNodeList.getLength(); it++) {
@@ -95,7 +95,7 @@ public class XmlDbFileHandler {
 
                             evaluation = new Evaluation(eNote, eMatiere);
                             etudiant.ajouteEvaluations(evaluation);
-                            System.out.println("Matiere : " + evaluation.getMatiere() + " Note : " + evaluation.getNote());
+                            //System.out.println("Matiere : " + evaluation.getMatiere() + " Note : " + evaluation.getNote());
                         }
                     }
                 }
@@ -169,8 +169,8 @@ public class XmlDbFileHandler {
             transformer.transform(source, result);
 
             // Output to console for testing
-            StreamResult consoleResult = new StreamResult(System.out);
-            transformer.transform(source, consoleResult);
+            //StreamResult consoleResult = new StreamResult(System.out);
+            //transformer.transform(source, consoleResult);
         } catch (Exception e) {
             e.printStackTrace();
         }

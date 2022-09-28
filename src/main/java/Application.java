@@ -1,10 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import javax.swing.*;
-import javax.swing.border.EtchedBorder;
-import javax.swing.table.DefaultTableModel;
-import java.awt.*;
-import java.awt.event.*;
 
 public class Application extends Canvas {
     public static Ecole ecole = new Ecole("EESC", "LAXOU");
@@ -17,7 +12,7 @@ public class Application extends Canvas {
         WindowsHandler window = new WindowsHandler("Application de l`ecole", ecole);
         window.addComponentsToPane();
         window.pack();
-        window.setResizable(true);
+        window.setResizable(false);
         window.setLocationRelativeTo(null);
         window.setVisible(true);
         window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -32,6 +27,7 @@ public class Application extends Canvas {
 
         ecole = xmlDbFileHandler.loadObjectsFromXmlFile();
 
+        /*
         System.out.println("==============================");
         System.out.println("Ecole : " + ecole.getNomEcole() + " Adresse : " + ecole.getAdresse());
         System.out.println(ecole.getListeEtudiant().size());
@@ -43,6 +39,7 @@ public class Application extends Canvas {
             }
 
         }
+        */
 
         new Application(xmlDbFileHandler);
 

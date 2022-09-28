@@ -13,7 +13,6 @@ public class WindowsHandler extends JFrame implements WindowListener, WindowStat
         this.addWindowListener(this);
         this.addWindowStateListener(this);
         this.addWindowFocusListener(this);
-        System.out.println(ecole.getNomEcole());
     }
 
     public Ecole getEcole() {
