@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import javax.swing.*;
+import javax.swing.border.EtchedBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
@@ -12,210 +13,16 @@ public class Application extends Canvas {
 
     public Application(XmlDbFileHandler xmlDbFileHandler) throws InterruptedException {
 
-        WindowsHandler fenetre = new WindowsHandler("Application d'ecole", ecole);
-        //On récupère le panneau de la fenetre principale
-        JPanel panneau = (JPanel) fenetre.getContentPane();
-        JPanel panneau2 = new JPanel();
-        //On définie la hauteur / largeur de l'écran
-        panneau.setPreferredSize(new Dimension(500, 500));
-        panneau2.setPreferredSize(new Dimension(400, 300));
-        setBounds(0, 0, 500, 500);
 
-        panneau.setLayout(new FlowLayout());
-        panneau.add(panneau2);
-        panneau2.setLayout(new GridLayout());
-        JLabel label = new JLabel("Application de l`ecole " + ecole.getNomEcole() + " a " + ecole.getAdresse());
-        label.setFont(new Font("Broadway", Font.BOLD, 21));
-        JLabel labelMoyenne = new JLabel("Moyenne de globale notes :  " + 0);
+        WindowsHandler window = new WindowsHandler("Application de l`ecole", ecole);
+        window.addComponentsToPane();
+        window.pack();
+        window.setResizable(true);
+        window.setLocationRelativeTo(null);
+        window.setVisible(true);
+        window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        window.requestFocus();
 
-        TableHandler jTable = new TableHandler(ecole);
-
-        JScrollPane sp = new JScrollPane(jTable);
-
-        JButton ajouteEtudiantButton = new JButton();
-        JButton moyenneButton2 = new JButton();
-
-
-        JDialog alertDialog = new JDialog(fenetre, "Donnez nom et age SLP", false);
-        alertDialog.setLayout(new FlowLayout());
-        Button dButton = new Button("OK");
-        dButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                alertDialog.setVisible(false);
-            }
-        });
-        alertDialog.add(new JLabel("Donnez nom et age SLP"));
-        alertDialog.add(new JLabel(" Click ok to continue"));
-
-        JLabel pasNomerolbl = new JLabel();
-        pasNomerolbl.setVisible(false);
-        pasNomerolbl.setForeground(Color.RED);
-        alertDialog.add(pasNomerolbl);
-
-
-        alertDialog.add(dButton);
-        alertDialog.setLocation(500, 200);
-        alertDialog.setSize(300, 300);
-
-        JDialog ajoutEvaluqtionDialog = new JDialog(fenetre, "Ajout Evaluqtions pour etudiant a donne", false);
-        ajoutEvaluqtionDialog.setLayout(new FlowLayout());
-        ajoutEvaluqtionDialog.setSize(300, 300);
-        ajoutEvaluqtionDialog.setLocation(500, 300);
-
-        JLabel ajouteEvaluationHeader = new JLabel();
-
-
-        JLabel Matiere = new JLabel("Matiere : ");
-
-
-        String[] MatiereTextList = new String[]{"JAVA", "PHP", "SQL", "PYTON"};
-        JList ListMatiere = new JList(MatiereTextList);
-
-        ajoutEvaluqtionDialog.add(Matiere);
-        ajoutEvaluqtionDialog.add(ListMatiere);
-
-        JLabel Note = new JLabel("Note : ");
-        JTextField textFieldNomNote = new JTextField();
-        textFieldNomNote.setText("         ");
-        ajoutEvaluqtionDialog.add(Note);
-        ajoutEvaluqtionDialog.add(textFieldNomNote);
-
-        JLabel ajouteEvaluationInfo = new JLabel("ajoute Evaluation Info ");
-        JButton ajoutEvaluationInfoButton = new JButton("Ajoutez evaluation Info");
-
-
-        ajoutEvaluqtionDialog.add(ajouteEvaluationInfo);
-        ajoutEvaluqtionDialog.add(ajoutEvaluationInfoButton);
-
-        JLabel labeltTextField1 = new JLabel("Nom d'etudiant :  ");
-        JTextField textFieldNomEtudiant = new JTextField();
-        textFieldNomEtudiant.setSize(121, 30);
-
-        JLabel labelTextField2 = new JLabel("Age d'etudiant :  ");
-        JTextField textFieldAge = new JTextField();
-        textFieldAge.setSize(121, 30);
-
-        textFieldNomEtudiant.setText("                                                                                          ");
-        textFieldAge.setText("                                                                                          ");
-
-        ajoutEvaluqtionDialog.addWindowListener(new WindowAdapter() {
-
-            @Override
-            public void windowClosing(WindowEvent e) {
-                etudiant = null;
-                textFieldNomEtudiant.setText("");
-                textFieldAge.setText("");
-                textFieldNomNote.setText("");
-                xmlDbFileHandler.saveObjectsToXMLFile(ecole);
-
-            }
-        });
-        textFieldNomEtudiant.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                textFieldNomEtudiant.setText("");
-            }
-        });
-        ajoutEvaluationInfoButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                boolean isNoteOk = false;
-
-                int note = 0;
-                if (textFieldNomNote.getText().trim().length() > 0) {
-                    try {
-                        note = Integer.parseInt(textFieldNomNote.getText().trim());
-                        isNoteOk = true;
-                    } catch (NumberFormatException nfe) {
-                        isNoteOk = false;// Not a number.
-                    }
-                    if (isNoteOk) {
-                        Evaluation evaluation = new Evaluation(note, MatiereTextList[ListMatiere.getAnchorSelectionIndex()]);
-                        etudiant.ajouteEvaluations(evaluation);
-                        ecole.ajouteEtudiants(etudiant);
-
-                        jTable.setTable();
-
-
-                    }
-                }
-
-            }
-        });
-        moyenneButton2.setText("Calculez moyenne globale note");
-        ajouteEtudiantButton.setText("Ajoutez etudiant");
-        ajouteEtudiantButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-
-                String ageText = textFieldAge.getText().trim();
-                String nomText = textFieldNomEtudiant.getText().trim();
-
-                textFieldAge.setText(ageText);
-                textFieldNomEtudiant.setText(nomText);
-                int age = 0;
-                boolean isAgeOk = false;
-
-                if (nomText == "" || ageText == "") {
-                    alertDialog.setVisible(true);
-
-                } else {
-                    try {
-                        age = Integer.parseInt(ageText);
-                        isAgeOk = true;
-                    } catch (NumberFormatException nfe) {
-                        isAgeOk = false;// Not a number.
-                    }
-                }
-                if (isAgeOk && 7 < age) {
-                    ajoutEvaluqtionDialog.setVisible(true);
-                    ajouteEvaluationHeader.setText("Ajoute Evaluation Info for : " + nomText);
-                    etudiant = new Etudiant(nomText, age);
-
-                } else {
-                    alertDialog.setVisible(true);
-                    pasNomerolbl.setText(ageText + " n'est pas nomero d'age !! ");
-                    pasNomerolbl.setVisible(true);
-                    textFieldAge.setText("");
-                }
-            }
-        });
-        moyenneButton2.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                labelMoyenne.setText(String.valueOf(ecole.moyenneGlobale()));
-            }
-        });
-        panneau.add(label);
-
-        panneau2.add(sp);
-        panneau.add(panneau2);
-        panneau.add(new JLabel("__________________________________________________________________"));
-        panneau.add(labelMoyenne);
-        panneau.add(moyenneButton2);
-        panneau.add(new JLabel("__________________________________________________________________"));
-        panneau.add(labeltTextField1);
-        panneau.add(textFieldNomEtudiant);
-        panneau.add(labelTextField2);
-        panneau.add(textFieldAge);
-
-        panneau.add(ajouteEtudiantButton);
-
-        //On ajoute cette classe (qui hérite de Canvas) comme composant du panneau principal
-        panneau.add(this);
-
-
-        fenetre.pack();
-        fenetre.setResizable(false);
-        fenetre.setLocationRelativeTo(null);
-        fenetre.setVisible(true);
-        fenetre.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        fenetre.requestFocus();
-
-        //On indique que le raffraichissement de l'ecran doit être fait manuellement.
-        createBufferStrategy(2);
-        setIgnoreRepaint(true);
-        this.setFocusable(false);
-
-        //demarrer();
     }
 
     public static void main(String args[]) throws InterruptedException {
@@ -238,11 +45,6 @@ public class Application extends Canvas {
         }
 
         new Application(xmlDbFileHandler);
-
-        //ecole.getListeEtudiant().iterator().next().getListeEvaluations().iterator().next().setMatiere("PYTON");
-        //ecole.getListeEtudiant().iterator().next().getListeEvaluations().iterator().next().setNote(7);
-        //ecole.getMoyenne_globale_notes();
-        xmlDbFileHandler.saveObjectsToXMLFile(ecole);
 
     }
 

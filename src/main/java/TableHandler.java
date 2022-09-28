@@ -41,7 +41,8 @@ public class TableHandler extends JTable implements ActionListener {
         this.setShowVerticalLines(true);
         this.getScrollableTracksViewportHeight();
         this.getAutoscrolls();
-        this.setBounds(0, 0, 300, 200);
+        this.setBounds(0, 0, 200, 200);
+        this.setSize(200, 200);
         this.getColumn(column[0]).setMaxWidth(40);
         this.getColumn(column[1]).setMaxWidth(30);
         this.repaint();

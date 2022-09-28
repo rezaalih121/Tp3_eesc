@@ -7,12 +7,14 @@ import java.awt.event.WindowStateListener;
 
 public class DialogWindowsHandler extends JDialog implements WindowListener, WindowFocusListener, WindowStateListener {
 
+    WindowsHandler windowsOwner;
 
     public DialogWindowsHandler() {
     }
 
-    public DialogWindowsHandler(Frame owner, String title) {
+    public DialogWindowsHandler(WindowsHandler owner, String title) {
         super(owner, title);
+        windowsOwner = owner;
     }
 
     @Override
