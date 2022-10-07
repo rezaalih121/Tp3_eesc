@@ -38,14 +38,6 @@ public class ButtonHandler extends JButton implements ActionListener {
 
         ButtonHandler buttonHandler = (ButtonHandler) e.getSource();
 
-        if (buttonHandler.getText().equals("Calculez Moyenne Note")) {
-            windowsHandler.moyenneLabel.setText(windowsHandler.moyenneLabel.getText().replace("0", String.valueOf(ecole.moyenneGlobale())));
-        }
-
-        if (buttonHandler.getText().equals("OK")) {
-            windowsHandler.alertDialog.setVisible(false);
-        }
-
         if (buttonHandler.getText().equals("Ajout Etudiant")) {
 
             String ageText = String.valueOf(windowsHandler.ageEtudiantList.getSelectedItem());
@@ -56,10 +48,7 @@ public class ButtonHandler extends JButton implements ActionListener {
             boolean isAgeOk = false;
 
             if (nomText == "") {
-
-                windowsHandler.alertLbl1.setText("Donnez nom et age SLP");
-                windowsHandler.alertDialog.setVisible(true);
-
+                JOptionPane.showMessageDialog(windowsHandler, "Donnez nom et age SLP");
             } else {
                 try {
                     age = Integer.parseInt(ageText);
@@ -99,8 +88,7 @@ public class ButtonHandler extends JButton implements ActionListener {
                 windowsHandler.etudiantListTable.setTable();
 
             } else {
-                windowsHandler.alertLbl1.setText("Note n'est pas nomero !");
-                windowsHandler.alertDialog.setVisible(true);
+                JOptionPane.showMessageDialog(windowsHandler, "Note n'est pas nomero !");
             }
         }
         if (buttonHandler.getText().equals("Ajout Nouvel Etudiant")) {
@@ -108,7 +96,5 @@ public class ButtonHandler extends JButton implements ActionListener {
             windowsHandler.panelAddEvaluations.setVisible(false);
         }
     }
-
-
 }
 

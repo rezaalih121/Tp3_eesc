@@ -1,9 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowFocusListener;
-import java.awt.event.WindowListener;
-import java.awt.event.WindowStateListener;
+import java.awt.event.*;
 
 public class WindowsHandler extends JFrame implements WindowListener, WindowStateListener, WindowFocusListener {
 
@@ -26,14 +23,14 @@ public class WindowsHandler extends JFrame implements WindowListener, WindowStat
     protected Ecole ecole;
     protected Etudiant etudiant;
 
-    protected JLabel moyenneLabel, headerLabel, alertLbl1, alertLbl2, pasNomerolbl, nomEtudiantLbl, ageEtudiantLbl, matiereLbl, noteLbl, infoEtudiantLbl, infoEtudiantLbl2;
+    protected JLabel moyenneLabel, headerLabel, nomEtudiantLbl, ageEtudiantLbl, matiereLbl, noteLbl, infoEtudiantLbl, infoEtudiantLbl2;
     protected JPanel panel, panelAddEtudiantForm, panelAddEvaluations;
     protected TableHandler etudiantListTable;
-    protected ButtonHandler moyenneBtn, addEtudiantBtn, alertBtn, addEvaluationBtn, addNewEtudiantBtn;
+    protected ButtonHandler addEtudiantBtn, addEvaluationBtn, addNewEtudiantBtn;
+    JButton moyenneBtn;
     protected JScrollPane jScrollPaneTable;
-    protected DialogWindowsHandler alertDialog;
     protected JTextField nomEtudiantText, noteText;
-    protected JComboBox ageEtudiantList, matiereJlist;
+    protected JComboBox<String> ageEtudiantList, matiereJlist;
 
     protected void addComponentsToPane() {
         panel = new JPanel();
@@ -63,7 +60,10 @@ public class WindowsHandler extends JFrame implements WindowListener, WindowStat
 
 
         moyenneLabel = new JLabel("Moyenne de globale notes :  " + 0);
-        moyenneBtn = new ButtonHandler("Calculez Moyenne Note", this);
+
+        moyenneBtn = new JButton("Calculez Moyenne Note");
+        moyenneBtn.addActionListener(e -> this.moyenneLabel.setText(this.moyenneLabel.getText().replace("0", String.valueOf(ecole.moyenneGlobale()))));
+
         moyenneLabel.setLabelFor(moyenneBtn);
 
         panel.add(moyenneLabel);
@@ -84,7 +84,13 @@ public class WindowsHandler extends JFrame implements WindowListener, WindowStat
         for (int i = 0; i < 33; i++) {
             ageNum[i] = (i + 18) + "";
         }
-        ageEtudiantList = new JComboBox(ageNum);
+        ageEtudiantList = new JComboBox<>(ageNum);
+
+        ageEtudiantList.addItemListener((ItemEvent e) -> {
+            JComboBox jComboBox = (JComboBox) e.getSource();
+            System.out.println("Selected : " + jComboBox.getSelectedItem());
+        });
+
         ageEtudiantLbl.setLabelFor(ageEtudiantList);
 
         addEtudiantBtn = new ButtonHandler("Ajout Etudiant", this);
@@ -92,30 +98,6 @@ public class WindowsHandler extends JFrame implements WindowListener, WindowStat
         panelAddEtudiantForm.add(ageEtudiantLbl);
         panelAddEtudiantForm.add(ageEtudiantList);
         panelAddEtudiantForm.add(addEtudiantBtn);
-
-
-        alertDialog = new DialogWindowsHandler(this, "Donnez nom et age SLP");
-        alertDialog.setLayout(new FlowLayout());
-        alertDialog.setLocation(500, 200);
-        alertDialog.setSize(200, 200);
-
-        alertBtn = new ButtonHandler("OK", this);
-
-        pasNomerolbl = new JLabel();
-        pasNomerolbl.setVisible(false);
-        pasNomerolbl.setForeground(Color.RED);
-        alertDialog.add(pasNomerolbl);
-
-        alertLbl1 = new JLabel("Donnez nom et age SLP");
-        alertLbl1.setBorder(BorderFactory.createRaisedBevelBorder());
-        alertLbl1.setFont(new Font("Tahoma", Font.BOLD, 14));
-
-        alertLbl2 = new JLabel("Click ok to continue");
-        alertLbl2.setLabelFor(alertBtn);
-
-        alertDialog.add(alertLbl1);
-        alertDialog.add(alertBtn);
-        alertDialog.add(alertLbl2);
 
 
         infoEtudiantLbl = new JLabel("Ajout evaluation pour :  ");
@@ -128,7 +110,12 @@ public class WindowsHandler extends JFrame implements WindowListener, WindowStat
 
         matiereLbl = new JLabel("Matiere :  ");
         String[] matieres = {"JAVA", "PHP", "SQL", "PYTON", "C++", "JavaScript", "CSS-HTML"};
-        matiereJlist = new JComboBox(matieres);
+        matiereJlist = new JComboBox<>(matieres);
+
+        matiereJlist.addItemListener((ItemEvent e) -> {
+            JComboBox jComboBox = (JComboBox) e.getSource();
+            System.out.println("Selected : " + jComboBox.getSelectedItem());
+        });
         matiereLbl.setLabelFor(matiereJlist);
 
         panelAddEvaluations.add(matiereLbl);
@@ -177,8 +164,19 @@ public class WindowsHandler extends JFrame implements WindowListener, WindowStat
 
     @Override
     public void windowClosing(WindowEvent e) {
-        XmlDbFileHandler xmlDbFileHandler = new XmlDbFileHandler();
-        xmlDbFileHandler.saveObjectsToXMLFile(ecole);
+
+        Object[] choix = {"Oui", "Nope :-("};
+        int reponse = JOptionPane.showOptionDialog(this, "Est-ce que vous arreter l'application ? ", "Confirmer ! ", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, choix, choix[0]);
+        if (reponse == JOptionPane.YES_NO_OPTION) {
+
+            XmlDbFileHandler xmlDbFileHandler = new XmlDbFileHandler();
+            xmlDbFileHandler.saveObjectsToXMLFile(ecole);
+        } else {
+            XmlDbFileHandler xmlDbFileHandler = new XmlDbFileHandler();
+            xmlDbFileHandler.saveObjectsToXMLFile(ecole);
+            System.exit(0);
+        }
+
     }
 
     @Override

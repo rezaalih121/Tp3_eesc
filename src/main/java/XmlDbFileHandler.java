@@ -21,7 +21,7 @@ public class XmlDbFileHandler {
 
 
     private static String getPath() {
-        return System.getProperty("user.home") + "\\IdeaProjects\\Tp3_eesc\\src\\main\\java" + File.separator + "properties.xml";
+        return System.getProperty("user.home") + "\\IdeaProjects\\Tp3_eesc\\src\\main\\java\\properties.xml";
     }
 
     protected Ecole loadObjectsFromXmlFile() {
